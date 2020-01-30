@@ -8,7 +8,7 @@ import queryString from 'query-string';
 /**
  * WordPress dependencies
  */
-import { BlockControls, BlockIcon, InspectorControls } from '@wordpress/block-editor';
+import { BlockIcon, InspectorControls } from '@wordpress/block-editor';
 import {
 	Button,
 	ExternalLink,
@@ -16,7 +16,6 @@ import {
 	PanelBody,
 	Placeholder,
 	ToggleControl,
-	Toolbar,
 } from '@wordpress/components';
 import { useState } from '@wordpress/element';
 import { __, _x } from '@wordpress/i18n';
@@ -183,77 +182,56 @@ export default function CalendlyEdit( { attributes, className, clientId, setAttr
 		{ value: 'link', label: __( 'Link', 'jetpack' ) },
 	];
 
-	const blockControls = (
-		<BlockControls>
-			{ url && (
-				<Toolbar
-					isCollapsed={ true }
-					icon="admin-appearance"
-					label={ __( 'Style', 'jetpack' ) }
-					controls={ styleOptions.map( styleOption => ( {
-						title: styleOption.label,
-						isActive: styleOption.value === style,
-						onClick: () => setAttributes( { style: styleOption.value } ),
-					} ) ) }
-					popoverProps={ { className: 'is-calendly' } }
-				/>
-			) }
-		</BlockControls>
-	);
-
 	const inspectorControls = (
-		<InspectorControls>
+		<>
 			{ url && (
-				<>
-					<PanelBody title={ __( 'Styles', 'jetpack' ) }>
-						<BlockStylesSelector
-							clientId={ clientId }
-							styleOptions={ styleOptions }
-							onSelectStyle={ setAttributes }
-							activeStyle={ style }
-							attributes={ attributes }
-							viewportWidth={ 500 }
-						/>
-					</PanelBody>
-				</>
-			) }
-			<PanelBody title={ __( 'Calendar Settings', 'jetpack' ) } initialOpen={ false }>
-				<form onSubmit={ parseEmbedCode } className={ `${ className }-embed-form-sidebar` }>
-					<input
-						type="text"
-						id="embedCode"
-						onChange={ event => setEmbedCode( event.target.value ) }
-						placeholder={ __( 'Calendly web address or embed code…', 'jetpack' ) }
-						value={ embedCode }
-						className="components-placeholder__input"
-					/>
-					<div>
-						<Button isSecondary isLarge type="submit">
-							{ _x( 'Embed', 'button label', 'jetpack' ) }
-						</Button>
-					</div>
-				</form>
-
-				<ToggleControl
-					label={ __( 'Hide Event Type Details', 'jetpack' ) }
-					checked={ hideEventTypeDetails }
-					onChange={ () => setAttributes( { hideEventTypeDetails: ! hideEventTypeDetails } ) }
+				<BlockStylesSelector
+					clientId={ clientId }
+					styleOptions={ styleOptions }
+					onSelectStyle={ setAttributes }
+					activeStyle={ style }
+					attributes={ attributes }
+					viewportWidth={ 500 }
 				/>
-			</PanelBody>
-			{ url && (
-				<Notice className={ `${ className }-color-notice` } isDismissible={ false }>
-					<ExternalLink href="https://help.calendly.com/hc/en-us/community/posts/360033166114-Embed-Widget-Color-Customization-Available-Now-">
-						{ __( 'Follow these instructions to change the colors in this block.', 'jetpack' ) }
-					</ExternalLink>
-				</Notice>
 			) }
-		</InspectorControls>
+			<InspectorControls>
+				<PanelBody title={ __( 'Calendar Settings', 'jetpack' ) } initialOpen={ false }>
+					<form onSubmit={ parseEmbedCode } className={ `${ className }-embed-form-sidebar` }>
+						<input
+							type="text"
+							id="embedCode"
+							onChange={ event => setEmbedCode( event.target.value ) }
+							placeholder={ __( 'Calendly web address or embed code…', 'jetpack' ) }
+							value={ embedCode }
+							className="components-placeholder__input"
+						/>
+						<div>
+							<Button isSecondary isLarge type="submit">
+								{ _x( 'Embed', 'button label', 'jetpack' ) }
+							</Button>
+						</div>
+					</form>
+
+					<ToggleControl
+						label={ __( 'Hide Event Type Details', 'jetpack' ) }
+						checked={ hideEventTypeDetails }
+						onChange={ () => setAttributes( { hideEventTypeDetails: ! hideEventTypeDetails } ) }
+					/>
+				</PanelBody>
+				{ url && (
+					<Notice className={ `${ className }-color-notice` } isDismissible={ false }>
+						<ExternalLink href="https://help.calendly.com/hc/en-us/community/posts/360033166114-Embed-Widget-Color-Customization-Available-Now-">
+							{ __( 'Follow these instructions to change the colors in this block.', 'jetpack' ) }
+						</ExternalLink>
+					</Notice>
+				) }
+			</InspectorControls>
+		</>
 	);
 
 	return (
 		<div className={ className }>
 			{ inspectorControls }
-			{ blockControls }
 			{ url ? blockPreview( style ) : blockPlaceholder }
 		</div>
 	);
