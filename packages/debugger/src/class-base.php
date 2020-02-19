@@ -142,7 +142,7 @@ class Base {
 	 */
 	public function run_test( $name ) {
 		if ( array_key_exists( $name, $this->tests ) ) {
-			return call_user_func( $this->tests[ $name ]['test'] );
+			return call_user_func( $this->tests[ $name ]['test'], $this );
 		}
 		return new WP_Error( __( 'There is no test by that name: ', 'jetpack' ) . $name );
 	}
@@ -152,7 +152,7 @@ class Base {
 	 */
 	public function run_tests() {
 		foreach ( $this->tests as $test ) {
-			$result          = call_user_func( $test['test'] );
+			$result          = call_user_func( $test['test'], $this );
 			$result['group'] = $test['group'];
 			$result['type']  = $test['type'];
 			$this->results[] = $result;
