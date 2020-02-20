@@ -124,7 +124,7 @@ export default function OpenTableEdit( { attributes, setAttributes, className, c
 		}
 	};
 
-	const inspectorControls = () => (
+	const inspectorControls = (
 		<>
 			<InspectorAdvancedControls>
 				<ToggleControl
@@ -200,7 +200,7 @@ export default function OpenTableEdit( { attributes, setAttributes, className, c
 
 	return (
 		<div className={ editClasses }>
-			{ ! isEmpty( rid ) && <>{ inspectorControls() }</> }
+			{ ! isEmpty( rid ) && inspectorControls }
 			{ ! isEmpty( rid ) ? blockPreview() : blockPlaceholder }
 		</div>
 	);
